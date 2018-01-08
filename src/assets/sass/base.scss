@@ -1,0 +1,14 @@
+@import './mixin/function';
+@import './mixin/font';
+@import './mixin/reset';
+
+.icon, .icon_bf:before, .icon_af:after, .icon_ab{
+	// background: url('../images/spriter.png') no-repeat;
+	background-size: 230px 80px;
+	display: inline-block;
+	position: relative;
+}
+.icon_bf:before, .icon_af:after, .icon_ab{
+	content:'';
+}
+
