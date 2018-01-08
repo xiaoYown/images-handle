@@ -6,7 +6,6 @@ import AppCmpt from '../App.jsx';
 import homeCmpt from './views/home.jsx';
 import userCmpt from './views/user.jsx';
 import loginCmpt from './views/login.jsx';
-import IndexnavCmpt from './mixin/nav.jsx';
 
 import { getCookie } from 'tools/client';
 import jQuery from 'jquery';
@@ -40,7 +39,6 @@ class Index extends React.Component {
   render () {
     return (
       <div className="index-wrap">
-        <IndexnavCmpt />
         {this.props.children}
       </div>
     );

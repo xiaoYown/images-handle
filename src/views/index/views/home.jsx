@@ -1,13 +1,54 @@
 import React, { Component } from 'react';
 import fs from 'fs';
 
+class FileListCmpt extends Component {
+  constructor (props) {
+    super(props);
+    console.log(props);
+    this.state = {
+      fileList: props.list
+    };
+  }
+  componentWillReceiveProps (props) {
+    this.setState({ fileList: props.list });
+  }
+  render () {
+    const list = this.state.fileList.map((item, index) =>
+      <li key={ index }>{ item.name }</li>
+    );
+    return (
+      <ul className="home-wrap_filelist">
+        { list }
+      </ul>
+    );
+  }
+}
+
 class home extends React.Component {
   constructor (props) {
     super(props);
     // 获取初始状态
     this.state = {
-      filesInfo: []
+      filesInfo: [],
+      fileList: []
     };
+  }
+  showFiles () {
+    if (!this.refs.file.value) return;
+    let fileList = [];
+    let path = '';
+    let name = '';
+
+    let files = this.refs.file.files;
+
+    for (let i = 0, len = files.length; i < len; i++) {
+      path = files[i].path;
+      name = path.substring(path.lastIndexOf('\\') + 1, path.length);
+      fileList.push({
+        name
+      });
+    }
+    this.setState({ fileList });
   }
   getFiles () {
     if (!this.refs.file.value) return;
@@ -18,7 +59,7 @@ class home extends React.Component {
     let files = this.refs.file.files;
     let __files = [];
     let prefix = this.refs.name.value || 'file';
-    let separator = this.refs.spr.value || '_';
+    let separator = this.refs.spr.value || '-';
     let originPath;
     let typeOn = this.refs.type.checked;
 
@@ -42,7 +83,6 @@ class home extends React.Component {
       });
     }
     this.filesCopy(__files);
-    console.log(__files);
   }
   filesCopy (files) {
     for (let i = 0, len = files.length; i < len; i++) {
@@ -60,28 +100,23 @@ class home extends React.Component {
   render () {
     return (
       <section className="home-wrap">
-        <label>
-          <ul className="home-wrap_box-rename"
-            onDragStart={ this.dropFiles.bind(this) }
-            onDragEnter={ this.dropFiles.bind(this) }
-            onDragEnd={ this.dropFiles.bind(this) }
-            onDrop={ this.dropFiles.bind(this) }
-          >
-            <input
-              type="file"
-              multiple="multiple"
-              ref="file"
-              className="home-wrap_files"
-            />
-          </ul>
-        </label>
+        <div className="home-wrap_box-rename">
+          <input
+            type="file"
+            multiple="multiple"
+            onChange={ this.showFiles.bind(this) }
+            ref="file"
+            className="home-wrap_files"
+          />
+          <FileListCmpt list={ this.state.fileList }/>
+        </div>
         <label className="home-wrap_intro">
           <h4>名称</h4>
           <input type="text" ref="name" placeholder="file"/>
         </label>
         <label className="home-wrap_intro">
           <h4>分割符</h4>
-          <input type="text" ref="spr" placeholder="_"/>
+          <input type="text" ref="spr" placeholder="-"/>
         </label>
         <label className="home-wrap_intro">
           <h4>类型区分</h4>
@@ -99,7 +134,7 @@ class home extends React.Component {
           />
         </label>
         <label className="home-wrap_intro">
-          <button onClick={ this.getFiles.bind(this) }>确认修改</button>
+          <button className="home-wrap_making" onClick={ this.getFiles.bind(this) }>确认修改</button>
         </label>
       </section>
     );
