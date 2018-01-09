@@ -92,7 +92,33 @@ class home extends React.Component {
     this.setState({ fileList });
   }
   filesRename () {
-    for (let i = 0, len = this.state.fileList.length; i < len; i++) {
+    let i;
+    let len;
+    // let notExists = []; // 没有存在但是在修改列表中
+    // let allExists = []; // 已经存在但是与目标名称相同
+    // for (i = 0, len = this.state.fileList.length; i < len; i++) {
+    //   console.log(this.state.fileList[i]);
+    //   fs.stat(this.state.fileList[i].path_origin, (exists) => {
+    //     console.log(this.state.fileList[i]);
+    //     if (!exists) {
+    //       notExists.push(this.state.fileList[i].name_origin);
+    //     }
+    //   });
+    //   fs.stat(this.state.fileList[i].path_target, (exists) => {
+    //     if (exists) {
+    //       allExists.push(this.state.fileList[i].name_target);
+    //     }
+    //   });
+    // }
+    // if (notExists.length > 0) {
+    //   window.alert(notExists.join(',') + ' 文件不存在');
+    //   return;
+    // }
+    // if (allExists.length > 0) {
+    //   window.alert(allExists.join(',') + ' 这些文件已存在, 与目标名产生冲突');
+    //   return;
+    // }
+    for (i = 0, len = this.state.fileList.length; i < len; i++) {
       fs.rename(this.state.fileList[i].path_origin, this.state.fileList[i].path_target, (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
