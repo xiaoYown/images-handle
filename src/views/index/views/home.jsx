@@ -4,7 +4,6 @@ import fs from 'fs';
 class FileListCmpt extends Component {
   constructor (props) {
     super(props);
-    console.log(props);
     this.state = {
       fileList: props.list
     };
@@ -14,7 +13,11 @@ class FileListCmpt extends Component {
   }
   render () {
     const list = this.state.fileList.map((item, index) =>
-      <li key={ index }>{ item.name }</li>
+      <li key={ index }>
+        <span className="name--origin">{ item.name_origin }</span>
+        <span>&nbsp;----&nbsp;</span>
+        <span className="name--target">{ item.name_target }</span>
+      </li>
     );
     return (
       <ul className="home-wrap_filelist">
@@ -29,7 +32,7 @@ class home extends React.Component {
     super(props);
     // 获取初始状态
     this.state = {
-      filesInfo: [],
+      startIndex: '',
       fileList: []
     };
   }
@@ -48,45 +51,49 @@ class home extends React.Component {
         name
       });
     }
-    this.setState({ fileList });
+    this.getFiles();
   }
   getFiles () {
-    if (!this.refs.file.value) return;
     let val;
     let suffix;
     let suffixIndex = {};
-    let name;
     let files = this.refs.file.files;
-    let __files = [];
+    let fileList = [];
     let prefix = this.refs.name.value || 'file';
     let separator = this.refs.spr.value || '-';
-    let originPath;
+    let startIndex = this.state.startIndex ? parseInt(this.state.startIndex) : 1;
+    let nameOrigin;
+    let nameTarget;
+    let pathOrigin;
+    let pathTarget;
     let typeOn = this.refs.type.checked;
 
     for (let i = 0, len = files.length; i < len; i++) {
       val = files[i].path;
       suffix = val.match(/\.\w+/)[0];
       if (!typeOn) {
-        suffixIndex[suffix] = i + 1;
+        suffixIndex[suffix] = startIndex + i;
       } else if (typeof suffixIndex[suffix] === 'undefined') {
-        suffixIndex[suffix] = 1;
+        suffixIndex[suffix] = startIndex;
       } else {
         suffixIndex[suffix] += 1;
       }
-      name = val.substring(val.lastIndexOf('\\') + 1, val.indexOf(suffix));
-      originPath = val.substring(0, val.lastIndexOf('\\') + 1);
-      console.log(originPath);
-      __files.push({
-        name: name + suffix,
-        origin_path: val,
-        target_path: originPath + prefix + separator + suffixIndex[suffix] + suffix
+      nameOrigin = val.substring(val.lastIndexOf('\\') + 1, val.indexOf(suffix)) + suffix;
+      nameTarget = prefix + separator + suffixIndex[suffix] + suffix;
+      pathOrigin = val.substring(0, val.lastIndexOf('\\') + 1);
+      pathTarget = pathOrigin + nameTarget;
+      fileList.push({
+        name_origin: nameOrigin,
+        name_target: nameTarget,
+        path_origin: val,
+        path_target: pathTarget
       });
     }
-    this.filesCopy(__files);
+    this.setState({ fileList });
   }
-  filesCopy (files) {
-    for (let i = 0, len = files.length; i < len; i++) {
-      fs.rename(files[i].origin_path, files[i].target_path, (err) => {
+  filesRename () {
+    for (let i = 0, len = this.state.fileList.length; i < len; i++) {
+      fs.rename(this.state.fileList[i].path_origin, this.state.fileList[i].path_target, (err) => {
         if (err) throw err;
         console.log('The file has been saved!');
       });
@@ -95,12 +102,15 @@ class home extends React.Component {
   }
   dropFiles (event) {
     event.preventDefault();
-    console.log(event.dataTransfer);
+  }
+  startIndexChange () {
+    let startIndex = this.refs.start.value.replace(/!\d/g, '');
+    this.setState({ startIndex }, this.showFiles);
   }
   render () {
     return (
       <section className="home-wrap">
-        <div className="home-wrap_box-rename">
+        <div className="home-wrap_box-rename scroll--bar_4">
           <input
             type="file"
             multiple="multiple"
@@ -112,11 +122,15 @@ class home extends React.Component {
         </div>
         <label className="home-wrap_intro">
           <h4>名称</h4>
-          <input type="text" ref="name" placeholder="file"/>
+          <input type="text" ref="name" placeholder="file" onChange={ this.showFiles.bind(this) }/>
         </label>
         <label className="home-wrap_intro">
           <h4>分割符</h4>
-          <input type="text" ref="spr" placeholder="-"/>
+          <input type="text" ref="spr" placeholder="-" onChange={ this.showFiles.bind(this) }/>
+        </label>
+        <label className="home-wrap_intro">
+          <h4>起始数</h4>
+          <input type="text" ref="start" placeholder="1" value={ this.state.startIndex } onChange={ this.startIndexChange.bind(this) }/>
         </label>
         <label className="home-wrap_intro">
           <h4>类型区分</h4>
@@ -126,15 +140,17 @@ class home extends React.Component {
             type="radio"
             ref="type"
             defaultChecked="checked"
+            onChange={ this.showFiles.bind(this) }
           />
           关
           <input
             name="type"
             type="radio"
+            onChange={ this.showFiles.bind(this) }
           />
         </label>
         <label className="home-wrap_intro">
-          <button className="home-wrap_making" onClick={ this.getFiles.bind(this) }>确认修改</button>
+          <button className="home-wrap_making" onClick={ this.filesRename.bind(this) }>确认修改</button>
         </label>
       </section>
     );

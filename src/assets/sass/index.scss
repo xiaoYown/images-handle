@@ -34,22 +34,44 @@
   &_box {
     &-rename {
       position: relative;
-      width: 200px;
+      width: 400px;
       height: 200px;
       background-color: pink;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
   }
   &_files {
     position: absolute;
-    border: 1px solid #999;
     display: block;
     // visibility: hidden;
-    opacity: 0;
     width: 100%;
-    height: 100%;
+    height: 99%;
+    border: 1px solid #999;
+    opacity: 0;
   }
   &_filelist {
     color: #777;
+    padding: 8px;
+    li {
+      position: relative;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+    }
+    .name--origin,
+    .name--target {
+      position: absolute;
+      top: 0;
+    }
+    .name--origin {
+      left: 0;
+      text-align: left;
+    }
+    .name--target {
+      right: 0;
+      text-align: right;
+    }
   }
   &_intro {
     display: block;
