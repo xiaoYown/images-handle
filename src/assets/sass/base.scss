@@ -1,6 +1,7 @@
 @import './mixin/function';
 @import './mixin/font';
 @import './mixin/reset';
+@import './mixin/theme';
 
 .icon, .icon_bf:before, .icon_af:after, .icon_ab{
 	// background: url('../images/spriter.png') no-repeat;
@@ -38,3 +39,6 @@
 	}
 }
 
+*{
+	@extend .scroll--bar_8;
+}

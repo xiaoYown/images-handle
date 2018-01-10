@@ -14,7 +14,7 @@ body {
   color:#000;
   margin: 0 auto;
   overflow-x: hidden;
-  font-family:$fontFamilyBase;
+  font-family: $fontFamilyBase;
   -webkit-box-orient: vertical;
   -webkit-box-align: stretch;
 }
@@ -35,6 +35,8 @@ input, textarea, select,button {
 }
 button {
   background-color: #fff;
+  font-family: $fontFamilyBase;
+  cursor: pointer;
 }
 section {
   -moz-user-select: none;
