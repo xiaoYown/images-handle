@@ -26,7 +26,7 @@ class Index extends React.Component {
   // 渲染并返回一个虚拟DOM
   render () {
     return (
-      <div className="index-wrap">
+      <div className="rename-wrap">
         {this.props.children}
       </div>
     );
@@ -53,5 +53,5 @@ const routers = (
 
 render(
   routers,
-  document.getElementById('page_index')
+  document.getElementById('page_rename')
 );

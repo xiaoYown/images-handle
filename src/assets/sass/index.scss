@@ -84,16 +84,6 @@
       width: 56%;
       padding: 2px 4px;
     }
-    input[type="checkbox"] {
-      vertical-align: middle;
-      width: 14px;
-      height: 14px;
-      border: 1px solid $std_lv_2;
-      margin: 0 6px;
-      &:checked {
-        background: $std_lv_2;
-      }
-    }
   }
   &_footer {
     position: fixed;

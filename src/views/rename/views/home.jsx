@@ -262,58 +262,57 @@ class home extends React.Component {
   render () {
     return (
       <section className="home-wrap">
-        <webview src="/rename"></webview>
+        <div className="home-wrap_box-rename scroll--bar_4">
+          <input
+            type="file"
+            multiple="multiple"
+            onChange={ this.showFiles.bind(this) }
+            ref="file"
+            className="home-wrap_files"
+          />
+          <FileListCmpt list={ this.state.fileList }/>
+        </div>
+        <ul className="home-wrap_options">
+          <li className="home-wrap_option">
+            <label className="home-wrap_intro">
+              <h4>名称</h4>
+              <input type="text" ref="name" placeholder="file" onChange={ this.nameFilter.bind(this, 'name') }/>
+            </label>
+            <label className="home-wrap_intro">
+              <h4>分割符</h4>
+              <input type="text" ref="spr" placeholder="-" onChange={ this.nameFilter.bind(this, 'spr') }/>
+            </label>
+          </li>
+          <li className="home-wrap_option">
+            <label className="home-wrap_intro">
+              <h4>起始数</h4>
+              <input type="text" ref="start" placeholder="1" value={ this.state.startIndex } onChange={ this.startIndexChange.bind(this) }/>
+            </label>
+          </li>
+          <li className="home-wrap_option">
+            <label className="home-wrap_intro">
+              <h4>类型区分</h4>
+              <label className="checkbox__wrap">
+                <input
+                  type="checkbox"
+                  ref="type"
+                  defaultChecked="checked"
+                  onClick={ this.filesInfoChange.bind(this) }
+                />
+                <i className="iconfont icon-sure"></i>
+              </label>
+            </label>
+          </li>
+        </ul>
+        <div className="home-wrap_footer">
+          <ul className="home-wrap_footer-operation">
+            <li className="iconfont icon-sure" onClick={ this.filesRenameBegin.bind(this) }></li>
+            <li className="iconfont icon-trash" onClick={ this.clear.bind(this) }></li>
+          </ul>
+        </div>
       </section>
     );
   }
 };
-// <div className="home-wrap_box-rename scroll--bar_4">
-//   <input
-//     type="file"
-//     multiple="multiple"
-//     onChange={ this.showFiles.bind(this) }
-//     ref="file"
-//     className="home-wrap_files"
-//   />
-//   <FileListCmpt list={ this.state.fileList }/>
-// </div>
-// <ul className="home-wrap_options">
-//   <li className="home-wrap_option">
-//     <label className="home-wrap_intro">
-//       <h4>名称</h4>
-//       <input type="text" ref="name" placeholder="file" onChange={ this.nameFilter.bind(this, 'name') }/>
-//     </label>
-//     <label className="home-wrap_intro">
-//       <h4>分割符</h4>
-//       <input type="text" ref="spr" placeholder="-" onChange={ this.nameFilter.bind(this, 'spr') }/>
-//     </label>
-//   </li>
-//   <li className="home-wrap_option">
-//     <label className="home-wrap_intro">
-//       <h4>起始数</h4>
-//       <input type="text" ref="start" placeholder="1" value={ this.state.startIndex } onChange={ this.startIndexChange.bind(this) }/>
-//     </label>
-//   </li>
-//   <li className="home-wrap_option">
-//     <label className="home-wrap_intro">
-//       <h4>类型区分</h4>
-//       <label className="checkbox__wrap">
-//         <input
-//           type="checkbox"
-//           ref="type"
-//           defaultChecked="checked"
-//           onClick={ this.filesInfoChange.bind(this) }
-//         />
-//         <i className="iconfont icon-sure"></i>
-//       </label>
-//     </label>
-//   </li>
-// </ul>
-// <div className="home-wrap_footer">
-//   <ul className="home-wrap_footer-operation">
-//     <li className="iconfont icon-sure" onClick={ this.filesRenameBegin.bind(this) }></li>
-//     <li className="iconfont icon-trash" onClick={ this.clear.bind(this) }></li>
-//   </ul>
-// </div>
 
 export default home;

@@ -1,0 +1,33 @@
+/* checkbox */
+.checkbox__wrap {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 14px;
+  height: 14px;
+  border: 1px solid $std_lv_2;
+  border-radius: 1px;
+  text-align: center;
+  input[type="checkbox"], .icon-sure {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  input[type="checkbox"] {
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    &:checked {
+      background-color: $std_lv_2;
+      &+.icon-sure {
+        display: block;
+      }
+    }
+  }
+  .icon-sure {
+    display: none;
+    color: $reverse;
+    font-size: 14px;
+    line-height: 14px;
+  }
+}
